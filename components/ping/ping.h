@@ -28,28 +28,27 @@ class PingSensor : public sensor::Sensor, public PollingComponent {
   /* the sensor must be started after connecting WiFi */
   float get_setup_priority() const override { return esphome::setup_priority::AFTER_WIFI; }
 
-  void set_n_packet(uint32_t n) { n_packet = n; }
-  void set_target(const std::string address) { target = address; }
-  void set_timeout(uint32_t timeout_ms) { timeout = timeout_ms; }
+  void set_n_packet(uint32_t n) { this->n_packet = n; }
+  void set_target(const std::string address) { this->target = address; }
+  void set_timeout(uint32_t timeout_ms) { this->timeout = timeout_ms; }
 
-  int get_latest_latency() { return latest_latency; }
+  int32_t get_latest_latency() { return latest_latency; }
   float get_latest_loss() { return latest_loss; }
 
   void set_packet_loss_sensor(sensor::Sensor *packet_loss_sensor) { packet_loss_sensor_ = packet_loss_sensor; }
   void set_latency_sensor(sensor::Sensor *latency_sensor) { latency_sensor_ = latency_sensor; }
 
- private:
  protected:
-  int latest_latency = -1;
-  int timeout = 1000;
-  int n_packet = 13;
-  float latest_loss = -1;
-  std::string target = "8.8.8.8";
+  int32_t latest_latency{-1};
+  uint32_t timeout{1000};
+  uint32_t n_packet{13};
+  float latest_loss{-1.0f};
+  std::string target{"8.8.8.8"};
   sensor::Sensor *packet_loss_sensor_{nullptr};
   sensor::Sensor *latency_sensor_{nullptr};
 
-  void set_latest_loss(float f) { latest_loss = f; }
-  void set_latest_latency(int i) { latest_latency = i; }
+  void set_latest_loss(float f) { this->latest_loss = f; }
+  void set_latest_latency(int i) { this->latest_latency = i; }
 };
 
 }  // namespace ping
